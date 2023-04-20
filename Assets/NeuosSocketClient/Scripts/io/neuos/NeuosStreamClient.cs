@@ -137,18 +137,20 @@ namespace io.neuos
                 // so we await until we have at least 2 bytes before reading the stream
                 if (m_Socket.Available > 2)
                 {
-                    // get the next message
-                    var data = GetMessage();
-                    // parse the json into a JObject so we can pull properties out easily
-                    var response = JObject.Parse(data);
-                    // get the command that arrived
-                    var commandValue = (string)response.Property(StreamObjectKeys.COMMAND)?.Value;
-                    // example of pulling the time stamp off the command
-                    var timestamp = (long)response.Property(StreamObjectKeys.TIME_STAMP)?.Value;
-                    
-                    switch (commandValue)
+                    try
                     {
-                        case StreamCommandValues.VALUE_CHANGED:
+                        // get the next message
+                        var data = GetMessage();
+                        // parse the json into a JObject so we can pull properties out easily
+                        var response = JObject.Parse(data);
+                        // get the command that arrived
+                        var commandValue = (string)response.Property(StreamObjectKeys.COMMAND)?.Value;
+                        // example of pulling the time stamp off the command
+                        var timestamp = (long)response.Property(StreamObjectKeys.TIME_STAMP)?.Value;
+
+                        switch (commandValue)
+                        {
+                            case StreamCommandValues.VALUE_CHANGED:
                             {
                                 var key = (string)response.Property(StreamObjectKeys.KEY)?.Value;
                                 var type = response.Property(StreamObjectKeys.VALUE)?.Value.Type;
@@ -157,7 +159,7 @@ namespace io.neuos
                                     var value = (float)response.Property(StreamObjectKeys.VALUE)?.Value;
                                     OnValueChanged?.Invoke(key, value);
                                 }
-                                else 
+                                else
                                 {
                                     var value = response.Property(StreamObjectKeys.VALUE)?.Value;
                                     List<float> floats = new List<float>();
@@ -165,29 +167,38 @@ namespace io.neuos
                                     {
                                         floats.Add((float)child);
                                     }
+
                                     OnArrayValueChanged?.Invoke(key, floats.ToArray());
                                 }
+
                                 break;
                             }
-                        case StreamCommandValues.QA:
+                            case StreamCommandValues.QA:
                             {
                                 var passed = (bool)response.Property(StreamObjectKeys.PASSED)?.Value;
                                 var failure = (int)response.Property(StreamObjectKeys.TYPE)?.Value;
                                 OnQAEvent?.Invoke(passed, failure);
                                 break;
                             }
-                        case StreamCommandValues.SESSION_COMPLETE:
+                            case StreamCommandValues.SESSION_COMPLETE:
                             {
                                 Disconnect();
                                 break;
                             }
-                        case StreamCommandValues.CONNECTION:
+                            case StreamCommandValues.CONNECTION:
                             {
-                                var previous =  (int)response.Property(StreamObjectKeys.PREVIOUS)?.Value;
+                                var previous = (int)response.Property(StreamObjectKeys.PREVIOUS)?.Value;
                                 var current = (int)response.Property(StreamObjectKeys.CURRENT)?.Value;
                                 OnHeadbandConnectionChanged?.Invoke(previous, current);
                                 break;
                             }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+#if UNITY_EDITOR
+                Debug.LogWarning("Caught Exception " + e.Message);        
+#endif
                     }
                 }
                 else // no data is avalable atm , so we verify our socket is still connected
