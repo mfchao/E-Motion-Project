@@ -24,7 +24,7 @@ public class QuadScript : MonoBehaviour
 
     // GameObject go = Instantiate(Resources.Load<GameObject>("Projectile"));
 
-  }
+  } 
 
   void Update()
   {
@@ -62,7 +62,7 @@ public class QuadScript : MonoBehaviour
       {
         Debug.Log("Hit Object " + hit.collider.gameObject.name);
         Debug.Log("Hit Texture coordinates = " + hit.textureCoord.x + "," + hit.textureCoord.y);
-        addHitPoint(hit.textureCoord.x*4-2, hit.textureCoord.y*4-2);
+        addHitPoint((hit.textureCoord.x*4-2), (hit.textureCoord.y*4-2));
       }
       Destroy(cp.otherCollider.gameObject);
     }

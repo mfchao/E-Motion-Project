@@ -15,9 +15,28 @@
       _Range3("Range 3",Range(0,1)) = 0.75
       _Range4("Range 4",Range(0,1)) = 1
 
-      _Diameter("Diameter",Range(0,1)) = 1.0
+      _Diameter("Diameter",Range(0,1)) = 0.5
       _Strength("Strength",Range(.1,4)) = 1.0
       _PulseSpeed("Pulse Speed",Range(0,5)) = 0
+
+      // _ColorSet1_0("Color Set 1 - 0", Color) = (0,0,0,1)
+      // _ColorSet1_1("Color Set 1 - 1", Color) = (.9,.1,.8,1)
+      // _ColorSet1_2("Color Set 1 - 2", Color) = (.2,.6,.9,1)
+      // _ColorSet1_3("Color Set 1 - 3", Color) = (.8,.4,.2,1)
+      // _ColorSet1_4("Color Set 1 - 4", Color) = (1,1,0,1)
+
+      // _ColorSet2_0("Color Set 2 - 0", Color) = (0,0,0,1)
+      // _ColorSet2_1("Color Set 2 - 1", Color) = (.1,.8,.1,1)
+      // _ColorSet2_2("Color Set 2 - 2", Color) = (.7,.2,.4,1)
+      // _ColorSet2_3("Color Set 2 - 3", Color) = (.4,.7,.1,1)
+      // _ColorSet2_4("Color Set 2 - 4", Color) = (1,0,1,1)
+
+      // _ColorSet3_0("Color Set 3 - 0", Color) = (0,0,0,1)
+      // _ColorSet3_1("Color Set 3 - 1", Color) = (.2,.5,.1,1)
+      // _ColorSet3_2("Color Set 3 - 2", Color) = (.9,.3,.7,1)
+      // _ColorSet3_3("Color Set 3 - 3", Color) = (.4,.6,.9,1)
+      // _ColorSet3_4("Color Set 3 - 4", Color) = (1,.6,.2,1)
+      
   }
     SubShader
     {
@@ -55,6 +74,24 @@
         float4 _Color3;
         float4 _Color4;
 
+        // float4 _ColorSet1_0;
+        // float4 _ColorSet1_1;
+        // float4 _ColorSet1_2;
+        // float4 _ColorSet1_3;
+        // float4 _ColorSet1_4;
+
+        // float4 _ColorSet2_0;
+        // float4 _ColorSet2_1;
+        // float4 _ColorSet2_2;
+        // float4 _ColorSet2_3;
+        // float4 _ColorSet2_4;
+
+        // float4 _ColorSet3_0;
+        // float4 _ColorSet3_1;
+        // float4 _ColorSet3_2;
+        // float4 _ColorSet3_3;
+        // float4 _ColorSet3_4;
+
 
         float _Range0;
         float _Range1;
@@ -65,6 +102,7 @@
         float _Strength;
 
         float _PulseSpeed;
+
 
         v2f vert(appdata v)
         {
@@ -97,6 +135,28 @@
 
         float3 getHeatForPixel(float weight)
         {
+
+          // float3 colors[5];
+          // if (weight < 0.33) {
+          // colors[0] = _ColorSet1_0;
+          // colors[1] = _ColorSet1_1;
+          // colors[2] = _ColorSet1_2;
+          // colors[3] = _ColorSet1_3;
+          // colors[4] = _ColorSet1_4;
+          // } else if (weight < 0.66) {
+          // colors[0] = _ColorSet2_0;
+          // colors[1] = _ColorSet2_1;
+          // colors[2] = _ColorSet2_2;
+          // colors[3] = _ColorSet2_3;
+          // colors[4] = _ColorSet2_4;
+          // } else {
+          // colors[0] = _ColorSet3_0;
+          // colors[1] = _ColorSet3_1;
+          // colors[2] = _ColorSet3_2;
+          // colors[3] = _ColorSet3_3;
+          // colors[4] = _ColorSet3_4;
+          // }
+
           if (weight <= pointranges[0])
           {
             return colors[0];
@@ -143,13 +203,15 @@
 
           initalize();
           float2 uv = i.uv;
-          // uv = uv * 2.0 - float2(1.0,1.0);  //our texture uv range is -2 to 2
+          uv = uv * 2.0 - float2(1.0,1.0);  //our texture uv range is -2 to 2
 
           float totalWeight = 0.0;
           for (float i = 0.0; i < _HitCount; i++)
           {
             float2 work_pt = float2(_Hits[i * 3], _Hits[i * 3 + 1]);
             float pt_intensity = _Hits[i * 3 + 2];
+
+            // float randNum = frac(sin(dot(uv, float2(12.9898,78.233))) * 43758.5453);
 
             totalWeight += 0.5 * distsq(uv, work_pt) * pt_intensity * _Strength * (1 + sin(_Time.y * _PulseSpeed));
           }

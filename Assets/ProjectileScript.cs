@@ -19,6 +19,8 @@ public class ProjectileScript : MonoBehaviour
 
     private float quadSize;
 
+   
+
 
     void Start()
     {
@@ -45,8 +47,8 @@ public class ProjectileScript : MonoBehaviour
             gyroSmoothValue = Vector3.Lerp(gyroSmoothValue, new Vector3(value[0], value[1], value[2]), gyroSensitivity);
 
              // Normalize gyroscope data
-            float normalizedX = Mathf.Clamp01(Mathf.Abs(gyroSmoothValue.x) / 120f);
-            float normalizedY = Mathf.Clamp01(Mathf.Abs(gyroSmoothValue.y) / 120f);
+            float normalizedX = Mathf.Clamp01(Mathf.Abs(gyroSmoothValue.x) / 50f);
+            float normalizedY = Mathf.Clamp01(Mathf.Abs(gyroSmoothValue.y) / 50f);
 
             // Map gyroscope data to quad grid
             float quadWidth = quad.transform.localScale.x;
@@ -73,5 +75,27 @@ public class ProjectileScript : MonoBehaviour
             
         }
     }
+
+    // public void OnValueChanged(string key, float value)
+    // {
+    //     if (key == "enjoyment")
+    //     {
+    //         // Update light's color based on enjoyment value
+    //         float normalizedValueE = value / 100f; 
+    //         Shader.SetGlobalFloat("_EnjoymentValue", normalizedValueE);
+    //     }
+    //     else if (key == "focus")
+    //     {
+    //         // Update light's color based on focus value
+    //         float normalizedValueF = value / 100f; 
+    //         Shader.SetGlobalFloat("_FocusValue", normalizedValueF);
+    //     }
+    //     else if (key == "zone_state")
+    //     {
+    //         // Update light's color based on zone state value
+    //         float normalizedValueZ = value / 100f; 
+    //         Shader.SetGlobalFloat("_ZoneValue", normalizedValueZ);
+    //     }
+    // }
 
 }

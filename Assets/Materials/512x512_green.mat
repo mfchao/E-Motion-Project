@@ -63,6 +63,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _Diameter: 1
     - _DstBlend: 0
+    - _EnjoymentValue: 0.5
+    - _FocusValue: 0.5
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -70,7 +72,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _PulseSpeed: 0
+    - _PulseSpeed: 0.97203636
     - _Range0: 0
     - _Range1: 0.25
     - _Range2: 0.5
@@ -79,15 +81,31 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Strength: 1
+    - _Strength: 1.8256623
     - _UVSec: 0
     - _ZWrite: 1
+    - _ZoneValue: 0.5
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 0, g: 0, b: 0, a: 1}
-    - _Color1: {r: 0, g: 0.9, b: 0.2, a: 1}
-    - _Color2: {r: 0.9, g: 1, b: 0.3, a: 1}
-    - _Color3: {r: 0.9, g: 0.7, b: 0.1, a: 1}
-    - _Color4: {r: 1, g: 0, b: 0, a: 1}
+    - _Color1: {r: 0.3247597, g: 0.7735849, b: 0.45833865, a: 1}
+    - _Color2: {r: 0.2980392, g: 1, b: 0.7395484, a: 1}
+    - _Color3: {r: 0.31990921, g: 0.8584906, b: 0.8116279, a: 1}
+    - _Color4: {r: 0, g: 0.7365489, b: 1, a: 1}
+    - _ColorSet1_0: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorSet1_1: {r: 0.9, g: 0.1, b: 0.8, a: 1}
+    - _ColorSet1_2: {r: 0.2, g: 0.6, b: 0.9, a: 1}
+    - _ColorSet1_3: {r: 0.8, g: 0.4, b: 0.2, a: 1}
+    - _ColorSet1_4: {r: 1, g: 1, b: 0, a: 1}
+    - _ColorSet2_0: {r: 0, g: 0, b: 1, a: 1}
+    - _ColorSet2_1: {r: 0.1, g: 0.8, b: 0.1, a: 1}
+    - _ColorSet2_2: {r: 0.7, g: 0.2, b: 0.4, a: 1}
+    - _ColorSet2_3: {r: 0.4, g: 0.7, b: 0.1, a: 1}
+    - _ColorSet2_4: {r: 1, g: 0, b: 1, a: 1}
+    - _ColorSet3_0: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorSet3_1: {r: 0.2, g: 0.5, b: 0.1, a: 1}
+    - _ColorSet3_2: {r: 0.9, g: 0.3, b: 0.7, a: 1}
+    - _ColorSet3_3: {r: 0.4, g: 0.6, b: 0.9, a: 1}
+    - _ColorSet3_4: {r: 1, g: 0.6, b: 0.2, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
