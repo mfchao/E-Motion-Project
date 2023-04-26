@@ -10,76 +10,95 @@ public class QuadScript : MonoBehaviour
   float[] mPoints;
   int mHitCount;
 
-  float mDelay;
+  // float mDelay;
+  public GameObject projectile;
+  public GameObject quad;
+
+  private float interval = 1f; // interval in seconds
+  private float timer = 0f;
 
 
   void Start()
   {
-    mDelay = 3;
+    // mDelay = 3;
 
     mMeshRenderer = GetComponent<MeshRenderer>();
     mMaterial = mMeshRenderer.material;
 
     mPoints = new float[100 * 3]; //32 point 
 
-    // GameObject go = Instantiate(Resources.Load<GameObject>("Projectile"));
-
   } 
 
-  void Update()
-  {
-    mDelay -= Time.deltaTime;
-    if (mDelay <=0)
+   void Update()
     {
+        // increment timer
+        timer += Time.deltaTime;
+
+        // check if interval has passed
+        if (timer >= interval)
+        {
       
-      // go.transform.position = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-3f, -1f));
+        // calculate texture coordinates of current position
+        Vector3 quadPos = quad.transform.position;
+        Vector3 quadSize = quad.transform.localScale;
+        Vector3 projectilePos = projectile.transform.position;
+        Vector2 texCoords = new Vector2(
+            (projectilePos.x - quadPos.x + quadSize.x / 2) / quadSize.x,
+            (projectilePos.z - quadPos.z + quadSize.y / 2) / quadSize.y);
 
+        // add current texture coordinates to hit point list
+        addHitPoint(texCoords.x, texCoords.y);
+         Debug.Log("Added hit " + texCoords.x + "," + texCoords.y);
 
+        // reset timer
+        timer = 0f;
+        }
 
-      mDelay = 0.5f;
-      
     }
-
-  }
 
   
 
-  private void OnCollisionEnter(Collision collision)
-  {
-    foreach(ContactPoint cp in collision.contacts)
+  // private void OnCollisionEnter(Collision collision)
+  // {
+  //   foreach (ContactPoint cp in collision.contacts)
+  //   {
+  //       Debug.Log("Contact with object " + cp.otherCollider.gameObject.name);
+
+  //       Vector3 startOfRay = new Vector3(cp.point.x, 0.5f, cp.point.z); // set y component to 0 to fix the direction of the ray in the x-z plane
+  //       Vector3 rayDir = new Vector3(0,-1, 0); 
+
+  //       Ray ray = new Ray(startOfRay, rayDir);
+  //       RaycastHit hit;
+
+  //       bool hitIt = Physics.Raycast(ray, out hit, 10f, LayerMask.GetMask("HeatMapLayer"));
+
+  //       if (hitIt)
+  //       {
+  //           Debug.Log("Hit Object " + hit.collider.gameObject.name);
+  //           Debug.Log("Hit Texture coordinates = " + hit.textureCoord.x + "," + hit.textureCoord.y);
+  //           addHitPoint(hit.textureCoord.x * 4 - 2, 0, cp.point.z * 4 - 2);
+  //       }
+
+  //       Destroy(cp.otherCollider.gameObject);
+  //   }
+  // }
+
+  public void addHitPoint(float xp, float yp)
     {
-      Debug.Log("Contact with object " + cp.otherCollider.gameObject.name);
-
-      Vector3 StartOfRay = cp.point - cp.normal; //cp.point is point of contact with sphere
-      Vector3 RayDir = cp.normal;
-
-      Ray ray = new Ray(StartOfRay, RayDir);
-      RaycastHit hit;
-
-      bool hitit = Physics.Raycast(ray, out hit, 10f, LayerMask.GetMask("HeatMapLayer"));
-
-      if (hitit)
-      {
-        Debug.Log("Hit Object " + hit.collider.gameObject.name);
-        Debug.Log("Hit Texture coordinates = " + hit.textureCoord.x + "," + hit.textureCoord.y);
-        addHitPoint((hit.textureCoord.x*4-2), (hit.textureCoord.y*4-2));
-      }
-      Destroy(cp.otherCollider.gameObject);
-    }
-  }
-
-  public void addHitPoint(float xp,float yp)
-  {
     mPoints[mHitCount * 3] = xp;
     mPoints[mHitCount * 3 + 1] = yp;
-    mPoints[mHitCount * 3 + 2] = Random.Range(1f, 3f);
-
+    mPoints[mHitCount * 3 + 2] = Random.Range(1f,3f);
+    // increment hit count
     mHitCount++;
-    mHitCount %= 100;
+    mHitCount%=32;
 
     mMaterial.SetFloatArray("_Hits", mPoints);
     mMaterial.SetInt("_HitCount", mHitCount);
+    
+    Debug.Log("Hit it " + mPoints[mHitCount * 3] + mPoints[mHitCount * 3 + 1]);
 
-  }
+    
+    }
+
 
 }
