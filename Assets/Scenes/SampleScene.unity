@@ -2091,6 +2091,10 @@ PrefabInstance:
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 1480566773}
+    - target: {fileID: 2473054265436000630, guid: 592f1cb58b4f12c4ab3b66db1f9b8392, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2473054265436000634, guid: 592f1cb58b4f12c4ab3b66db1f9b8392, type: 3}
       propertyPath: m_RootOrder
       value: 3

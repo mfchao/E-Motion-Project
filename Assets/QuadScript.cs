@@ -14,7 +14,10 @@ public class QuadScript : MonoBehaviour
   public GameObject projectile;
   public GameObject quad;
 
-  private float interval = 1f; // interval in seconds
+  private float oscillationValue = 0f;
+  private float colorIndex = 0f;
+
+  private float interval = 0.5f; // interval in seconds
   private float timer = 0f;
 
 
@@ -34,6 +37,11 @@ public class QuadScript : MonoBehaviour
         // increment timer
         timer += Time.deltaTime;
 
+        oscillationValue += Time.deltaTime * 0.5f; // adjust speed as needed
+        float oscillationRange = Mathf.PingPong(oscillationValue, 4f) + 1f;
+
+        colorIndex = Random.Range(1, 6);
+
         // check if interval has passed
         if (timer >= interval)
         {
@@ -47,12 +55,14 @@ public class QuadScript : MonoBehaviour
             (projectilePos.z - quadPos.z + quadSize.y / 2) / quadSize.y);
 
         // add current texture coordinates to hit point list
-        addHitPoint(texCoords.x, texCoords.y);
+        addHitPoint(texCoords.x, texCoords.y, oscillationRange, colorIndex);
          Debug.Log("Added hit " + texCoords.x + "," + texCoords.y);
 
         // reset timer
         timer = 0f;
         }
+
+        
 
     }
 
@@ -83,11 +93,12 @@ public class QuadScript : MonoBehaviour
   //   }
   // }
 
-  public void addHitPoint(float xp, float yp)
+  public void addHitPoint(float xp, float yp, float oscillationRange, float colorSetNumber)
     {
-    mPoints[mHitCount * 3] = xp;
-    mPoints[mHitCount * 3 + 1] = yp;
-    mPoints[mHitCount * 3 + 2] = Random.Range(1f,3f);
+    mPoints[mHitCount * 4] = xp;
+    mPoints[mHitCount * 4 + 1] = yp;
+    mPoints[mHitCount * 4 + 2] = Random.Range(1f, oscillationRange);
+    mPoints[mHitCount * 4 + 3] = colorSetNumber; 
     // increment hit count
     mHitCount++;
     mHitCount%=32;
@@ -96,7 +107,8 @@ public class QuadScript : MonoBehaviour
     mMaterial.SetInt("_HitCount", mHitCount);
     
     Debug.Log("Hit it " + mPoints[mHitCount * 3] + mPoints[mHitCount * 3 + 1]);
-
+    Debug.Log("Intensity " + Random.Range(1f, oscillationRange));
+    Debug.Log("color index " + colorIndex);
     
     }
 

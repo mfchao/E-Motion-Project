@@ -8,13 +8,16 @@ public class ProjectileScript : MonoBehaviour
     // Material mMaterial;
     // MeshRenderer mMeshRenderer;
 
-    public float gyroSensitivity = 0.5f; // Adjust this value to control gyroscope sensitivity
+    public float gyroSensitivity = 1.5f; // Adjust this value to control gyroscope sensitivity
     private Vector3 gyroSmoothValue; 
     // public Light myLight;
 
 
     public GameObject projectile;
     public GameObject quad;
+
+    private Vector3 lastTargetPosition;
+
 
     // private float quadSize;
 
@@ -72,52 +75,174 @@ public class ProjectileScript : MonoBehaviour
 
     // }
 
-    public void OnArrayValueChanged(string key, float[] value)
+    // public void OnArrayValueChanged(string key, float[] value)
+    // {
+    //     // here we store the value into our dictionary
+    //     if (key == "Gyroscope") {
+
+    //         // Apply exponential smoothing to gyroscope value
+    //         gyroSmoothValue = Vector3.Lerp(gyroSmoothValue, new Vector3(value[0], value[1], value[2]), gyroSensitivity);
+
+    //         Vector3 direction = new Vector3(gyroSmoothValue.x/20f, 0, gyroSmoothValue.z/20f).normalized;
+
+    //         // Move the projectile in the direction of the gyroscope data
+    //         StartCoroutine(MoveProjectile(direction));
+
+
+       
+    //     }
+    // }
+
+    // private IEnumerator MoveProjectile(Vector3 direction)
+// {
+//     float elapsedTime = 0;
+//     float moveDuration = 0.1f; // adjust as needed
+//     float moveDistance = 0.01f; // adjust as needed
+//     Vector3 startPosition = projectile.transform.position;
+//     Vector3 targetPosition = startPosition;
+
+//     while (elapsedTime < moveDuration)
+//     {
+//         // Calculate the new target position based on the direction vector and the move distance
+//         Vector3 newTargetPosition = targetPosition + direction * moveDistance;
+
+//         // Clamp the new target position to the bounds of the quad
+//         float quadWidth = quad.transform.localScale.x;
+//         float quadHeight = quad.transform.localScale.y;
+//         Vector3 quadPosition = quad.transform.position;
+//         float halfQuadWidth = quadWidth / 2f;
+//         float halfQuadHeight = quadHeight / 2f;
+//         float clampedX = Mathf.Clamp(newTargetPosition.x, quadPosition.x - halfQuadWidth, quadPosition.x + halfQuadWidth);
+//         float clampedZ = Mathf.Clamp(newTargetPosition.z, quadPosition.z - halfQuadHeight, quadPosition.z + halfQuadHeight);
+//         newTargetPosition = new Vector3(clampedX, 0, clampedZ);
+
+//         // Calculate the new position of the projectile based on the elapsed time
+//         float t = elapsedTime / moveDuration;
+//         Vector3 newPosition = Vector3.Lerp(startPosition, newTargetPosition, t);
+
+//         // Update the position of the projectile
+//         projectile.transform.position = newPosition;
+
+//         // Wait for the next frame
+//         yield return null;
+
+//         // Update the elapsed time
+//         elapsedTime += Time.deltaTime;
+
+//         // Update the target position for the next iteration
+//         targetPosition = newTargetPosition;
+//     }
+
+//     // Set the final position of the projectile to the target position
+//     projectile.transform.position = targetPosition;
+// }
+
+// private Vector3 acceleration = Vector3.zero;
+// private Vector3 velocity = Vector3.zero;
+// private Vector3 displacement = Vector3.zero;
+// private float timeElapsed = 0;
+
+// public void OnArrayValueChanged(string key, float[] value)
+// {
+//     // here we store the value into our dictionary
+//     if (key == "Accelerometer") {
+
+//          // Store the acceleration value
+//         acceleration = new Vector3(value[0], value[1], value[2]);
+
+//         // Calculate the velocity and displacement
+//         velocity += acceleration * Time.deltaTime;
+//         displacement += velocity * Time.deltaTime;
+//         timeElapsed += Time.deltaTime;
+
+//         // Calculate the direction vector
+//         Vector3 direction = displacement.normalized;
+
+//         // Call the MoveProjectile function with the direction vector
+//         StartCoroutine(MoveProjectile(direction));
+//     }
+// }
+
+// private IEnumerator MoveProjectile(Vector3 direction)
+// {
+//     float elapsedTime = 0;
+//     float moveDuration = 0.1f; // adjust as needed
+//     float moveDistance = 0.01f; // adjust as needed
+//     Vector3 startPosition = projectile.transform.position;
+//     Vector3 targetPosition = startPosition;
+
+//     while (elapsedTime < moveDuration)
+//     {
+//         // Calculate the new target position based on the direction vector and the move distance
+//         Vector3 newTargetPosition = targetPosition + direction * moveDistance;
+
+//         // Clamp the new target position to the bounds of the quad
+//         float quadWidth = quad.transform.localScale.x;
+//         float quadHeight = quad.transform.localScale.y;
+//         Vector3 quadPosition = quad.transform.position;
+//         float halfQuadWidth = quadWidth / 2f;
+//         float halfQuadHeight = quadHeight / 2f;
+//         float clampedX = Mathf.Clamp(newTargetPosition.x, quadPosition.x - halfQuadWidth, quadPosition.x + halfQuadWidth);
+//         float clampedZ = Mathf.Clamp(newTargetPosition.z, quadPosition.z - halfQuadHeight, quadPosition.z + halfQuadHeight);
+//         newTargetPosition = new Vector3(clampedX, 0, clampedZ);
+
+//         // Calculate the new position of the projectile based on the elapsed time
+//         float t = elapsedTime / moveDuration;
+//         Vector3 newPosition = Vector3.Lerp(startPosition, newTargetPosition, t);
+
+//         // Clamp the new position to the bounds of the quad
+//         float clampedNewX = Mathf.Clamp(newPosition.x, quadPosition.x - halfQuadWidth, quadPosition.x + halfQuadWidth);
+//         float clampedNewZ = Mathf.Clamp(newPosition.z, quadPosition.z - halfQuadHeight, quadPosition.z + halfQuadHeight);
+//         newPosition = new Vector3(clampedNewX, 0, clampedNewZ);
+
+//         // Update the position of the projectile
+//         projectile.transform.position = newPosition;
+
+//         // Wait for the next frame
+//         yield return null;
+
+//         // Update the elapsed time
+//         elapsedTime += Time.deltaTime;
+
+//         // Update the target position for the next iteration
+//         targetPosition = newTargetPosition;
+//     }
+
+//     // Set the final position of the projectile to the target position
+//     projectile.transform.position = targetPosition;
+// }
+
+float dirX;
+float dirZ;
+float moveSpeed = 0.1f;
+float lerpSpeed = 0.2f;
+
+public void OnArrayValueChanged(string key, float[] value)
     {
         // here we store the value into our dictionary
-        if (key == "Gyroscope") {
+        if (key == "Accelerometer") {
+        float quadWidth = quad.transform.localScale.x;
+        float quadHeight = quad.transform.localScale.y;
+        Vector3 quadPosition = quad.transform.position;
+        float halfQuadWidth = quadWidth / 2f;
+        float halfQuadHeight = quadHeight / 2f;
+        
+        dirX = value[1] * moveSpeed;
+        dirZ = value[0] * moveSpeed;
+        float newXPos = Mathf.Clamp(projectile.transform.position.x + dirX, -halfQuadWidth, halfQuadHeight);
+        float newZPos = Mathf.Clamp(projectile.transform.position.z + dirZ, -halfQuadWidth, halfQuadHeight);
 
-            // Apply exponential smoothing to gyroscope value
-            gyroSmoothValue = Vector3.Lerp(gyroSmoothValue, new Vector3(value[0], value[1], value[2]), gyroSensitivity);
+        Vector3 targetPosition = new Vector3(newXPos, 0f, newZPos);
+        projectile.transform.position = Vector3.Lerp(projectile.transform.position, targetPosition, lerpSpeed);
 
-             // Normalize gyroscope data
-            float normalizedX = Mathf.Clamp01(Mathf.Abs(gyroSmoothValue.x) / 50f);
-            float normalizedZ = Mathf.Clamp01(Mathf.Abs(gyroSmoothValue.z) / 50f);
 
-            // Map gyroscope data to quad grid
-            float quadWidth = quad.transform.localScale.x;
-            float quadHeight = quad.transform.localScale.z;
 
-            Vector3 quadPosition = quad.transform.position;
-            float mappedX = (normalizedX * quadWidth) - (quadWidth / 2f) + quadPosition.x;
-            float mappedZ = (normalizedZ * quadHeight) - (quadHeight / 2f) + quadPosition.z;
-
-            // Update projectile position
-            float newX = Mathf.Clamp(mappedX, quadPosition.x - quadWidth/2, quadPosition.x + quadWidth/2);
-            float newZ = Mathf.Clamp(mappedZ, quadPosition.z - quadHeight/2, quadPosition.z + quadHeight/2);
-
-            projectile.transform.position = new Vector3(newX, 0, newZ);
-         
-            
+       
         }
     }
 
-    // public void addHitPoint(float xp, float yp)
-    // {
-    // mPoints[mHitCount * 3] = xp;
-    // mPoints[mHitCount * 3 + 1] = yp;
-    // mPoints[mHitCount * 3 + 2] = Random.Range(1f,3f);
-    // // increment hit count
-    // mHitCount++;
-    // mHitCount%=32;
 
-    // mMaterial.SetFloatArray("_Hits", mPoints);
-    // mMaterial.SetInt("_HitCount", mHitCount);
-    
-    // Debug.Log("Hit it " + mPoints[mHitCount * 3] + mPoints[mHitCount * 3 + 1]);
 
-    
-    // }
 
 
 }

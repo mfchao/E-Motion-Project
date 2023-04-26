@@ -3,11 +3,32 @@
   Properties
   {
     _MainTex("Texture", 2D) = "white" {}
+    _ColorSetNumber("Color Set Number", Range(0, 2)) = 0
+
+
     _Color0("Color 0",Color) = (0,0,0,1)
       _Color1("Color 1",Color) = (0,.9,.2,1)
       _Color2("Color 2",Color) = (.9,1,.3,1)
       _Color3("Color 3",Color) = (.9,.7,.1,1)
       _Color4("Color 4",Color) = (1,0,0,1)
+
+      _Color0A("Color 0A",Color) = (0,0,0,1)
+      _Color1A("Color 1A",Color) = (0.2,.4,.1,1)
+      _Color2A("Color 2A",Color) = (.3,5,.2,1)
+      _Color3A("Color 3A",Color) = (.1,.1,.1,1)
+      _Color4A("Color 4A",Color) = (1,0,0,1)
+
+      _Color0B("Color 0B",Color) = (0,0,0,1)
+      _Color1B("Color 1B",Color) = (0.2,.3,.5,1)
+      _Color2B("Color 2B",Color) = (.2,0.5,.6,1)
+      _Color3B("Color 3B",Color) = (.1,.8,.6,1)
+      _Color4B("Color 4B",Color) = (1,0,0,1)
+
+      _Color0C("Color 0C",Color) = (0,0,0,1)
+      _Color1C("Color 1C",Color) = (0.3,.3,.9,1)
+      _Color2C("Color 2C",Color) = (.1,1,.2,1)
+      _Color3C("Color 3C",Color) = (.6,.1,.1,1)
+      _Color4C("Color 4C",Color) = (1,0,0,1)
 
       _Range0("Range 0",Range(0,1)) = 0.
       _Range1("Range 1",Range(0,1)) = 0.25
@@ -29,6 +50,8 @@
       Pass
       {
         CGPROGRAM
+// Upgrade NOTE: excluded shader from DX11, OpenGL ES 2.0 because it uses unsized arrays
+#pragma exclude_renderers d3d11 gles
         #pragma vertex vert
         #pragma fragment frag
         #pragma multi_compile_fog
@@ -57,6 +80,24 @@
         float4 _Color3;
         float4 _Color4;
 
+        float4 _Color0A;
+        float4 _Color1A;
+        float4 _Color2A;
+        float4 _Color3A;
+        float4 _Color4A;
+
+        float4 _Color0B;
+        float4 _Color1B;
+        float4 _Color2B;
+        float4 _Color3B;
+        float4 _Color4B;
+
+        float4 _Color0C;
+        float4 _Color1C;
+        float4 _Color2C;
+        float4 _Color3C;
+        float4 _Color4C;
+
 
         float _Range0;
         float _Range1;
@@ -84,22 +125,16 @@
         float _Hits[3 * 100]; //passed in array of pointranges 3floats/point, x,y,intensity
         int _HitCount = 0;
 
-        void initialize()
-        {
-          colors[0] = _Color0;
-          colors[1] = _Color1;
-          colors[2] = _Color2;
-          colors[3] = _Color3;
-          colors[4] = _Color4;
+        void initialize() {
           pointranges[0] = _Range0;
           pointranges[1] = _Range1;
           pointranges[2] = _Range2;
           pointranges[3] = _Range3;
           pointranges[4] = _Range4;
-
         }
 
-        float3 getHeatForPixel(float weight)
+
+        float3 getHeatForPixel(float weight, float3 colors[5])
         {
 
           if (weight <= pointranges[0])
@@ -148,20 +183,52 @@
 
           initialize();
           float2 uv = i.uv;
-          uv = uv * float2(1.0, 2.0) - float3(0.0, 1.5, 1.0);
-           //our texture uv range is -2 to 2
+          uv = uv * float2(1.0, 1.0) ; //our texture uv range is -2 to 2
 
           float totalWeight = 0.0;
+          
           for (float i = 0.0; i < _HitCount; i++)
           {
-            float2 work_pt = float2(_Hits[i * 3], _Hits[i * 3 + 1]);
+            float2 work_pt = float2(_Hits[i * 4], _Hits[i * 4 + 1]);
             
-            float pt_intensity = _Hits[i * 3 + 2];
+            float pt_intensity = _Hits[i * 4 + 2];
+
+            float colorSet = _Hits[i * 4 + 3];
+
+            if (colorSet <= 1) {
+              colors[0] = _Color0;
+              colors[1] = _Color1;
+              colors[2] = _Color2;
+              colors[3] = _Color3;
+              colors[4] = _Color4;
+              }
+              if (colorSet == 2){
+              colors[0] = _Color0A;
+              colors[1] = _Color1A;
+              colors[2] = _Color2A;
+              colors[3] = _Color3A;
+              colors[4] = _Color4A;
+              }
+              if (colorSet == 3){
+              colors[0] = _Color0B;
+              colors[1] = _Color1B;
+              colors[2] = _Color2B;
+              colors[3] = _Color3B;
+              colors[4] = _Color4B;
+              }
+              if (colorSet >= 4){
+              colors[0] = _Color0C;
+              colors[1] = _Color1C;
+              colors[2] = _Color2C;
+              colors[3] = _Color3C;
+              colors[4] = _Color4C;
+              }
+
 
             totalWeight += 0.5 * distsq(uv, work_pt) * pt_intensity * _Strength * (1 + sin(_Time.y * _PulseSpeed));
 
           }
-          return col + float4(getHeatForPixel(totalWeight), .5);
+          return col + float4(getHeatForPixel(totalWeight, colors), .5);
           
         }
 
