@@ -183,7 +183,8 @@
 
           initialize();
           float2 uv = i.uv;
-          uv = uv * float2(1.0, 1.0) ; //our texture uv range is -2 to 2
+          uv = uv / float2(4.0, 1.0) ;
+          // uv * float2(1.0, 2.0) - float3(0.0, 1.5, 1.0);//our texture uv range is -2 to 2
 
           float totalWeight = 0.0;
           

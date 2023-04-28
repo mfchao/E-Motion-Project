@@ -214,30 +214,24 @@ public class ProjectileScript : MonoBehaviour
 
 float dirX;
 float dirZ;
-float moveSpeed = 0.1f;
+float moveSpeed = 0.5f;
 float lerpSpeed = 0.2f;
 
 public void OnArrayValueChanged(string key, float[] value)
     {
         // here we store the value into our dictionary
         if (key == "Accelerometer") {
-        float quadWidth = quad.transform.localScale.x;
-        float quadHeight = quad.transform.localScale.y;
-        Vector3 quadPosition = quad.transform.position;
-        float halfQuadWidth = quadWidth / 2f;
-        float halfQuadHeight = quadHeight / 2f;
-        
-        dirX = value[1] * moveSpeed;
-        dirZ = value[0] * moveSpeed;
-        float newXPos = Mathf.Clamp(projectile.transform.position.x + dirX, -halfQuadWidth, halfQuadHeight);
-        float newZPos = Mathf.Clamp(projectile.transform.position.z + dirZ, -halfQuadWidth, halfQuadHeight);
+        float halfXWidth = 1f;
+        float halfZWidth = 0.5f;
 
-        Vector3 targetPosition = new Vector3(newXPos, 0f, newZPos);
+        dirX = Mathf.Clamp(value[1], -1f, 1f) * moveSpeed;
+        dirZ = Mathf.Clamp(value[0], -1f, 1f) * moveSpeed;
+        float newXPos = Mathf.Clamp(projectile.transform.position.x + dirX, -halfXWidth, halfXWidth);
+        float newZPos = Mathf.Clamp(projectile.transform.position.z + dirZ, -halfZWidth, halfZWidth);
+
+        Vector3 targetPosition = new Vector3(newXPos, 0.5f, newZPos);
         projectile.transform.position = Vector3.Lerp(projectile.transform.position, targetPosition, lerpSpeed);
 
-
-
-       
         }
     }
 
