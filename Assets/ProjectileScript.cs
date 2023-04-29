@@ -212,43 +212,67 @@ public class ProjectileScript : MonoBehaviour
 //     projectile.transform.position = targetPosition;
 // }
 
-float dirX;
-float dirZ;
-float moveSpeed = 0.5f;
-float lerpSpeed = 0.2f;
+// float dirX;
+// float dirZ;
+// float moveSpeed = 0.1f;
+// float lerpSpeed = 0.2f;
 
-public void OnArrayValueChanged(string key, float[] value)
+// public void OnArrayValueChanged(string key, float[] value)
+//     {
+//         // here we store the value into our dictionary
+//         if (key == "Accelerometer") {
+//         float halfXWidth = 0.8f;
+//         float halfZWidth = 0.4f;
+
+//         dirX = Mathf.Clamp(value[1], -1f, 1f) * moveSpeed;
+//         dirZ = Mathf.Clamp(value[0], -1f, 1f) * moveSpeed;
+//         float newXPos = Mathf.Clamp(projectile.transform.position.x + dirX, -halfXWidth, halfXWidth);
+//         float newZPos = Mathf.Clamp(projectile.transform.position.z + dirZ, -halfZWidth, halfZWidth);
+
+//         Vector3 targetPosition = new Vector3(newXPos, 0.5f, newZPos);
+//         projectile.transform.position = Vector3.Lerp(projectile.transform.position, targetPosition, lerpSpeed);
+
+//         // Calculate direction vector
+//         Vector3 direction = new Vector3(dirX, 0f, dirZ);
+
+//         // Calculate rotation angle
+//         float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+//         // Create new Quaternion for rotation around y-axis
+//         Quaternion newRotation = Quaternion.Euler(0f, angle, 0f);
+
+//         // Set the rotation of the projectile to the new rotation
+//         projectile.transform.rotation = newRotation;
+
+//         }
+//     }
+
+    public float moveSpeed = 5f;
+    public float rotationSpeed = 5f;
+
+    void Update()
     {
-        // here we store the value into our dictionary
-        if (key == "Accelerometer") {
-        float halfXWidth = 1f;
-        float halfZWidth = 0.5f;
+        // Get input from arrow keys
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
 
-        dirX = Mathf.Clamp(value[1], -1f, 1f) * moveSpeed;
-        dirZ = Mathf.Clamp(value[0], -1f, 1f) * moveSpeed;
-        float newXPos = Mathf.Clamp(projectile.transform.position.x + dirX, -halfXWidth, halfXWidth);
-        float newZPos = Mathf.Clamp(projectile.transform.position.z + dirZ, -halfZWidth, halfZWidth);
+        // Calculate movement direction
+        Vector3 direction = new Vector3(horizontalInput, 0f, verticalInput).normalized;
 
-        Vector3 targetPosition = new Vector3(newXPos, 0.5f, newZPos);
-        projectile.transform.position = Vector3.Lerp(projectile.transform.position, targetPosition, lerpSpeed);
+        // Move the projectile
+        transform.position += direction * moveSpeed * Time.deltaTime;
 
-        // Calculate direction vector
-        Vector3 direction = new Vector3(dirX, 0f, dirZ);
-
-        // Calculate rotation angle
-        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-
-        // Create new Quaternion for rotation around y-axis
-        Quaternion newRotation = Quaternion.Euler(0f, angle, 0f);
-
-        // Set the rotation of the projectile to the new rotation
-        projectile.transform.rotation = newRotation;
-
+        // Rotate the projectile to face the movement direction
+        if (direction.magnitude > 0.1f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
-
-
-
-
-
 }
+
+
+
+
+
+

@@ -12,23 +12,23 @@
       _Color3("Color 3",Color) = (.9,.7,.1,1)
       _Color4("Color 4",Color) = (1,0,0,1)
 
-      _Color0A("Color 0A",Color) = (0,0,0,1)
-      _Color1A("Color 1A",Color) = (0.2,.4,.1,1)
-      _Color2A("Color 2A",Color) = (.3,5,.2,1)
-      _Color3A("Color 3A",Color) = (.1,.1,.1,1)
-      _Color4A("Color 4A",Color) = (1,0,0,1)
+      // _Color0A("Color 0A",Color) = (0,0,0,1)
+      // _Color1A("Color 1A",Color) = (0.2,.4,.1,1)
+      // _Color2A("Color 2A",Color) = (.3,5,.2,1)
+      // _Color3A("Color 3A",Color) = (.1,.1,.1,1)
+      // _Color4A("Color 4A",Color) = (1,0,0,1)
 
-      _Color0B("Color 0B",Color) = (0,0,0,1)
-      _Color1B("Color 1B",Color) = (0.2,.3,.5,1)
-      _Color2B("Color 2B",Color) = (.2,0.5,.6,1)
-      _Color3B("Color 3B",Color) = (.1,.8,.6,1)
-      _Color4B("Color 4B",Color) = (1,0,0,1)
+      // _Color0B("Color 0B",Color) = (0,0,0,1)
+      // _Color1B("Color 1B",Color) = (0.2,.3,.5,1)
+      // _Color2B("Color 2B",Color) = (.2,0.5,.6,1)
+      // _Color3B("Color 3B",Color) = (.1,.8,.6,1)
+      // _Color4B("Color 4B",Color) = (1,0,0,1)
 
-      _Color0C("Color 0C",Color) = (0,0,0,1)
-      _Color1C("Color 1C",Color) = (0.3,.3,.9,1)
-      _Color2C("Color 2C",Color) = (.1,1,.2,1)
-      _Color3C("Color 3C",Color) = (.6,.1,.1,1)
-      _Color4C("Color 4C",Color) = (1,0,0,1)
+      // _Color0C("Color 0C",Color) = (0,0,0,1)
+      // _Color1C("Color 1C",Color) = (0.3,.3,.9,1)
+      // _Color2C("Color 2C",Color) = (.1,1,.2,1)
+      // _Color3C("Color 3C",Color) = (.6,.1,.1,1)
+      // _Color4C("Color 4C",Color) = (1,0,0,1)
 
       _Range0("Range 0",Range(0,1)) = 0.
       _Range1("Range 1",Range(0,1)) = 0.25
@@ -36,7 +36,7 @@
       _Range3("Range 3",Range(0,1)) = 0.75
       _Range4("Range 4",Range(0,1)) = 1
 
-      _Diameter("Diameter",Range(0,1)) = 0.2
+      _Diameter("Diameter",Range(0,1)) = 0.05
       _Strength("Strength",Range(.1,4)) = 1.0
       _PulseSpeed("Pulse Speed",Range(0,5)) = 0
 
@@ -80,23 +80,23 @@
         float4 _Color3;
         float4 _Color4;
 
-        float4 _Color0A;
-        float4 _Color1A;
-        float4 _Color2A;
-        float4 _Color3A;
-        float4 _Color4A;
+        // float4 _Color0A;
+        // float4 _Color1A;
+        // float4 _Color2A;
+        // float4 _Color3A;
+        // float4 _Color4A;
 
-        float4 _Color0B;
-        float4 _Color1B;
-        float4 _Color2B;
-        float4 _Color3B;
-        float4 _Color4B;
+        // float4 _Color0B;
+        // float4 _Color1B;
+        // float4 _Color2B;
+        // float4 _Color3B;
+        // float4 _Color4B;
 
-        float4 _Color0C;
-        float4 _Color1C;
-        float4 _Color2C;
-        float4 _Color3C;
-        float4 _Color4C;
+        // float4 _Color0C;
+        // float4 _Color1C;
+        // float4 _Color2C;
+        // float4 _Color3C;
+        // float4 _Color4C;
 
 
         float _Range0;
@@ -126,6 +126,11 @@
         int _HitCount = 0;
 
         void initialize() {
+          colors[0] = _Color0;
+          colors[1] = _Color1;
+          colors[2] = _Color2;
+          colors[3] = _Color3;
+          colors[4] = _Color4;
           pointranges[0] = _Range0;
           pointranges[1] = _Range1;
           pointranges[2] = _Range2;
@@ -190,40 +195,40 @@
           
           for (float i = 0.0; i < _HitCount; i++)
           {
-            float2 work_pt = float2(_Hits[i * 4], _Hits[i * 4 + 1]);
+            float2 work_pt = float2(_Hits[i * 3], _Hits[i * 3 + 1]);
             
-            float pt_intensity = _Hits[i * 4 + 2];
+            float pt_intensity = _Hits[i * 3 + 2];
 
-            float colorSet = _Hits[i * 4 + 3];
+            // float colorSet = _Hits[i * 4 + 3];
 
-            if (colorSet <= 1) {
-              colors[0] = _Color0;
-              colors[1] = _Color1;
-              colors[2] = _Color2;
-              colors[3] = _Color3;
-              colors[4] = _Color4;
-              }
-              if (colorSet == 2){
-              colors[0] = _Color0A;
-              colors[1] = _Color1A;
-              colors[2] = _Color2A;
-              colors[3] = _Color3A;
-              colors[4] = _Color4A;
-              }
-              if (colorSet == 3){
-              colors[0] = _Color0B;
-              colors[1] = _Color1B;
-              colors[2] = _Color2B;
-              colors[3] = _Color3B;
-              colors[4] = _Color4B;
-              }
-              if (colorSet >= 4){
-              colors[0] = _Color0C;
-              colors[1] = _Color1C;
-              colors[2] = _Color2C;
-              colors[3] = _Color3C;
-              colors[4] = _Color4C;
-              }
+            // if (colorSet <= 1) {
+            //   colors[0] = _Color0;
+            //   colors[1] = _Color1;
+            //   colors[2] = _Color2;
+            //   colors[3] = _Color3;
+            //   colors[4] = _Color4;
+            //   }
+            //   if (colorSet == 2){
+            //   colors[0] = _Color0A;
+            //   colors[1] = _Color1A;
+            //   colors[2] = _Color2A;
+            //   colors[3] = _Color3A;
+            //   colors[4] = _Color4A;
+            //   }
+            //   if (colorSet == 3){
+            //   colors[0] = _Color0B;
+            //   colors[1] = _Color1B;
+            //   colors[2] = _Color2B;
+            //   colors[3] = _Color3B;
+            //   colors[4] = _Color4B;
+            //   }
+            //   if (colorSet >= 4){
+            //   colors[0] = _Color0C;
+            //   colors[1] = _Color1C;
+            //   colors[2] = _Color2C;
+            //   colors[3] = _Color3C;
+            //   colors[4] = _Color4C;
+            //   }
 
 
             totalWeight += 0.5 * distsq(uv, work_pt) * pt_intensity * _Strength * (1 + sin(_Time.y * _PulseSpeed));

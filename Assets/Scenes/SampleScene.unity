@@ -577,6 +577,8 @@ MonoBehaviour:
   gyroSensitivity: 1.5
   projectile: {fileID: 752549439}
   quad: {fileID: 172801812}
+  moveSpeed: 0.1
+  rotationSpeed: 5
 --- !u!1 &818479536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,43 +1165,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2021178655527167927, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.589989
+      value: 18.62
       objectReference: {fileID: 0}
     - target: {fileID: -2021178655527167927, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -18.2
+      value: -3.07
       objectReference: {fileID: 0}
     - target: {fileID: -2021178655527167927, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8979952
+      value: 0.73332417
       objectReference: {fileID: 0}
     - target: {fileID: -2021178655527167927, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.43979105
+      value: 0.6797406
       objectReference: {fileID: 0}
     - target: {fileID: -2021178655527167927, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0125492355
+      value: 0.010412747
       objectReference: {fileID: 0}
     - target: {fileID: -2021178655527167927, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0055738427
+      value: 0.0089513045
       objectReference: {fileID: 0}
     - target: {fileID: -2021178655527167927, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 52.159
+      value: 85.382
       objectReference: {fileID: 0}
     - target: {fileID: -2021178655527167927, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 2.564
+      value: 19.928
       objectReference: {fileID: 0}
     - target: {fileID: -2021178655527167927, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 1.966
+      value: 19.81
       objectReference: {fileID: 0}
     - target: {fileID: -1071359958148435772, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_Lightmapping
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 681856272089237647, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ebc63f30977c6084691105b08b3f5173, type: 3}
       propertyPath: m_Name
@@ -1267,7 +1273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e7804bf9f205e484b9cf445706764c19, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.09
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e7804bf9f205e484b9cf445706764c19, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2087,7 +2093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1955654429
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2168,7 +2174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2064704525
 MonoBehaviour:
   m_ObjectHideFlags: 0

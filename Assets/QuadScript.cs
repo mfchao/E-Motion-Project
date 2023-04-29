@@ -40,7 +40,7 @@ public class QuadScript : MonoBehaviour
         oscillationValue += Time.deltaTime * 0.5f; // adjust speed as needed
         float oscillationRange = Mathf.PingPong(oscillationValue, 4f) + 1f;
 
-        colorIndex = Random.Range(1, 6);
+        // colorIndex = Random.Range(1, 6);
 
         // check if interval has passed
         if (timer >= interval)
@@ -55,7 +55,7 @@ public class QuadScript : MonoBehaviour
             (projectilePos.z - quadPos.z + quadSize.y / 2) / quadSize.y);
 
         // add current texture coordinates to hit point list
-        addHitPoint(texCoords.x, texCoords.y, oscillationRange, colorIndex);
+        addHitPoint(texCoords.x, texCoords.y, oscillationRange);
          Debug.Log("Added hit " + texCoords.x + "," + texCoords.y);
 
         // reset timer
@@ -93,12 +93,12 @@ public class QuadScript : MonoBehaviour
   //   }
   // }
 
-  public void addHitPoint(float xp, float yp, float oscillationRange, float colorSetNumber)
+  public void addHitPoint(float xp, float yp, float oscillationRange)
     {
-    mPoints[mHitCount * 4] = xp;
-    mPoints[mHitCount * 4 + 1] = yp;
-    mPoints[mHitCount * 4 + 2] = Random.Range(1f, oscillationRange);
-    mPoints[mHitCount * 4 + 3] = colorSetNumber; 
+    mPoints[mHitCount * 3] = xp;
+    mPoints[mHitCount * 3 + 1] = yp;
+    mPoints[mHitCount * 3 + 2] = Random.Range(1f, oscillationRange);
+    // mPoints[mHitCount * 3 + 3] = colorSetNumber; 
     // increment hit count
     mHitCount++;
     mHitCount%=32;
@@ -108,7 +108,7 @@ public class QuadScript : MonoBehaviour
     
     Debug.Log("Hit it " + mPoints[mHitCount * 3] + mPoints[mHitCount * 3 + 1]);
     Debug.Log("Intensity " + Random.Range(1f, oscillationRange));
-    Debug.Log("color index " + colorIndex);
+    // Debug.Log("color index " + colorIndex);
     
     }
 
