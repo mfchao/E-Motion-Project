@@ -232,6 +232,18 @@ public void OnArrayValueChanged(string key, float[] value)
         Vector3 targetPosition = new Vector3(newXPos, 0.5f, newZPos);
         projectile.transform.position = Vector3.Lerp(projectile.transform.position, targetPosition, lerpSpeed);
 
+        // Calculate direction vector
+        Vector3 direction = new Vector3(dirX, 0f, dirZ);
+
+        // Calculate rotation angle
+        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+        // Create new Quaternion for rotation around y-axis
+        Quaternion newRotation = Quaternion.Euler(0f, angle, 0f);
+
+        // Set the rotation of the projectile to the new rotation
+        projectile.transform.rotation = newRotation;
+
         }
     }
 
