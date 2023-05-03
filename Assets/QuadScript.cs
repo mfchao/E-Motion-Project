@@ -17,7 +17,7 @@ public class QuadScript : MonoBehaviour
   private float oscillationValue = 0f;
   private float colorIndex = 0f;
 
-  private float interval = 0.5f; // interval in seconds
+  private float interval = 0.2f; // interval in seconds
   private float timer = 0f;
 
 
@@ -28,7 +28,7 @@ public class QuadScript : MonoBehaviour
     mMeshRenderer = GetComponent<MeshRenderer>();
     mMaterial = mMeshRenderer.material;
 
-    mPoints = new float[100 * 3]; //32 point 
+    mPoints = new float[200 * 3]; //32 point 
 
   } 
 
@@ -101,7 +101,7 @@ public class QuadScript : MonoBehaviour
     // mPoints[mHitCount * 3 + 3] = colorSetNumber; 
     // increment hit count
     mHitCount++;
-    mHitCount%=32;
+    mHitCount%=200;
 
     mMaterial.SetFloatArray("_Hits", mPoints);
     mMaterial.SetInt("_HitCount", mHitCount);
